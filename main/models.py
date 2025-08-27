@@ -204,3 +204,14 @@ class Images(models.Model):
 
     def __str__(self):
         return f"Image of {self.product.title}"
+
+class Cart(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Product")
+    created_at = models.DateTimeField("Created at", auto_now_add=True)
+
+    def __str__(self):
+        return f"Card of {self.product.title}"
+
+    class Meta:
+        verbose_name = "Cart"
+        verbose_name_plural = "Carts"
