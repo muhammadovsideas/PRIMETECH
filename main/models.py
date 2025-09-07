@@ -206,6 +206,7 @@ class Images(models.Model):
         return f"Image of {self.product.title}"
 
 class Cart(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, verbose_name="User", related_name="carts")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Product")
     created_at = models.DateTimeField("Created at", auto_now_add=True)
 

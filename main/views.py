@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
-
+from users.permissions import *
 from .serializers import *
 from rest_framework.generics import RetrieveAPIView, ListAPIView, CreateAPIView
 from rest_framework.response import Response
@@ -120,19 +120,29 @@ class ImageListAPIView(ListAPIView):
     serializer_class = ImagesSerializer
     permission_classes = [AllowAny]
 
-class CartListAPIView(ListAPIView):
-    queryset = Cart.objects.all()
+class CartListAPIView(generics.ListAPIView):
     serializer_class = CartSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsUser]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+
 
 class CartCreateAPIView(generics.CreateAPIView):
-    queryset = Cart.objects.all()
     serializer_class = CartSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsUser]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class CartDeleteAPIView(generics.DestroyAPIView):
-    queryset = Cart.objects.all()
     serializer_class = CartSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsUser]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+
+
+
 

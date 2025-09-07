@@ -7,8 +7,9 @@ class User(AbstractUser):
     class Role(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
         MANAGER = "MANAGER", "Manager"
+        USER = "USER", "User"
 
-    role = models.CharField(max_length=20, choices=Role.choices)
+    role = models.CharField(max_length=20, choices=Role.choices,default=Role.USER)
     phone_number = models.CharField(max_length=13, unique=True, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
 
