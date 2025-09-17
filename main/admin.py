@@ -1,17 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from drf_yasg.openapi import Contact
 from unfold.admin import ModelAdmin
 
 from users.models import User
 from .forms import SaleForm
 from .models import (
     Customer, Category, Product,
-    Sale, MonthlyStats, Expense, Purchase, Salary,Images
+    Sale, MonthlyStats, Expense, Purchase, Salary, Images, About, Announcement, AboutImage, AnnouncementImage,
 )
 
-# unregister default Group model
+
 admin.site.unregister(Group)
-admin.site.register(Images)
+
 
 
 # ------------------ Translation & Unfold mixin ------------------
@@ -106,9 +107,13 @@ class CategoryAdmin(CustomAdminMixin, RoleRestrictedAdminMixin):
     list_filter = ("title",)
 
 
+class ProductImageInline(admin.TabularInline):
+    model = Images
+    extra = 1
 # ------------------ Product admin ------------------
 @admin.register(Product)
 class ProductAdmin(CustomAdminMixin, RoleRestrictedAdminMixin):
+    inlines = [ProductImageInline]
     list_display = (
         "title", "description", "brand", "price",
         "discount_percentage", "discount_price", "image",
@@ -157,3 +162,24 @@ class SalaryAdmin(CustomAdminMixin, RoleRestrictedAdminMixin):
     list_display = ("gave_by", "taken_by", "salary_price", "for_month", "created_at")
     search_fields = ("gave_by__username", "taken_by__username", "salary_price")
     ordering = ("-created_at",)
+
+class AboutImageInline(admin.TabularInline):
+    model = AboutImage
+    extra = 1
+
+@admin.register(About)
+class AboutAdmin(CustomAdminMixin, RoleRestrictedAdminMixin):
+    list_display = ("title","image","description")
+    search_fields = ("title",)
+    inlines = [AboutImageInline]
+
+
+class AnnouncementImageInline(admin.TabularInline):
+    model = AnnouncementImage
+    extra = 1
+
+@admin.register(Announcement)
+class AnnouncementAdmin(CustomAdminMixin, RoleRestrictedAdminMixin):
+    list_display = ("title", "description","image","created_at")
+    search_fields = ("title",)
+    inlines = [AnnouncementImageInline]

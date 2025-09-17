@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('auth/', include('users.urls')),
     path("docs/", schema_view.with_ui('swagger', cache_timeout=0), name="schema-swagger-ui"),
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

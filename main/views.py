@@ -143,6 +143,29 @@ class CartDeleteAPIView(generics.DestroyAPIView):
     def get_queryset(self):
         return Cart.objects.filter(user=self.request.user)
 
+class AboutRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = AboutSerializer
+    permission_classes = [AllowAny]
+
+    def get_object(self):
+        return About.objects.first()
+
+class AnnouncementListAPIView(generics.ListAPIView):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
+    permission_classes = [AllowAny]
+
+
+
+class AnnouncementRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
+    permission_classes = [AllowAny]
+
+
+
+
+
 
 
 

@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from users.models import User
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 
@@ -216,3 +217,35 @@ class Cart(models.Model):
     class Meta:
         verbose_name = "Cart"
         verbose_name_plural = "Carts"
+
+
+class About(models.Model):
+    title = models.CharField("About title", max_length=255)
+    description = CKEditor5Field('description')
+    image = models.ImageField("About images", upload_to='about/', blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+class AboutImage(models.Model):
+    about = models.ForeignKey(About, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField("Image", upload_to='about_images/', blank=True, null=True)
+
+    def __str__(self):
+        return str(self.image)
+
+class Announcement(models.Model):
+    title = models.CharField("Announcement title", max_length=255)
+    description = CKEditor5Field('description')
+    image = models.ImageField("Announcement", upload_to='announcement/', blank=True, null=True)
+    created_at = models.DateTimeField("Created at", auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class AnnouncementImage(models.Model):
+     announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE, related_name="images")
+     image = models.ImageField("Image", upload_to='announcement_images/', blank=True, null=True)
+
+     def __str__(self):
+        return str(self.announcement)

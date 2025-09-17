@@ -25,9 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-a^a93&r70+jo%#b6dqwo!e!^4jgj#&9_(%m)!n$63w)fy7g44&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "primetech.uz",
+    "www.primetech.uz",
+    "104.248.198.125",
+]
+
 
 
 # Application definition
@@ -44,11 +49,15 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'main.apps.MainConfig',
     # packages
+    "django_ckeditor_5",
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
     "corsheaders",
+
 ]
+
+
 
 
 UNFOLD = {
@@ -70,6 +79,7 @@ UNFOLD = {
     # Recent actions (history) panelini yashirish
     "SHOW_HISTORY": False,
 }
+
 
 
 REST_FRAMEWORK = {
@@ -114,15 +124,17 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",   # local React uchun
-    "http://104.248.198.125",  # serverdagi frontend uchun
+    "http://localhost:3000",   # frontend dev rejimi
+    "http://104.248.198.125",  # agar frontend ham shu IP da ishlasa
+    "https://primetech.uz",    # keyinchalik domen ulansa
 ]
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'templates' ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,6 +147,49 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+
+CKEDITOR_5_CUSTOM_CSS = 'path/to/custom.css'  # optional
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': [
+            'heading', '|',
+            'fontSize', 'fontColor', 'fontBackgroundColor', '|',
+            'bold', 'italic', 'link',
+            'bulletedList', 'numberedList', 'todoList', '|',
+            'codeBlock', 'emoji', '|',
+            'undo', 'redo'
+        ],
+        'language': 'en',
+        'fontSize': {
+            'options': [8, 10, 12, 14, 16, 18, 24, 32, 48],
+            'supportAllValues': True
+        },
+        'fontColor': {
+            'colors': [
+                {'color': '#000000', 'label': 'Black'},
+                {'color': '#FF0000', 'label': 'Red'},
+                {'color': '#00FF00', 'label': 'Green'},
+                {'color': '#0000FF', 'label': 'Blue'},
+                {'color': '#FFFF00', 'label': 'Yellow'},
+                {'color': '#FFA500', 'label': 'Orange'},
+                {'color': '#800080', 'label': 'Purple'}
+            ],
+            'columns': 5
+        },
+        'fontBackgroundColor': {
+            'colors': [
+                {'color': '#FFFFFF', 'label': 'White'},
+                {'color': '#000000', 'label': 'Black'},
+                {'color': '#FFEB3B', 'label': 'Light Yellow'},
+                {'color': '#B3E5FC', 'label': 'Light Blue'},
+                {'color': '#C8E6C9', 'label': 'Light Green'}
+            ],
+            'columns': 5
+        }
+    }
+}
+
 
 
 
@@ -184,15 +239,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 
-STATIC_URL = 'static/'
-if DEBUG:
-    STATICFILES_DIRS = [BASE_DIR / 'static']
-else:
-    STATIC_ROOT = BASE_DIR / 'static'
+import os
 
+STATIC_ROOT = '/var/www/PRIMETECH/static/'
+MEDIA_ROOT = '/var/www/PRIMETECH/media/'
+
+STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
